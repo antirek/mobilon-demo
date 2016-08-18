@@ -19,6 +19,10 @@
 					    <input type="text" class="form-control" id="key" placeholder="key">
 					</div>
 					<div class="form-group">
+					    <label for="id">id</label>
+					    <input type="text" class="form-control" id="id" placeholder="id">
+					</div>
+					<div class="form-group">
 					    <label for="number">number</label>
 					    <input type="text" class="form-control" id="number" placeholder="Number">
 					</div>
@@ -31,10 +35,12 @@
   	<script>
   	var $number = $('#number');
   	var $key = $('#key');
+  	var $id=$('#id');
   	$('#submitRecallForm').on('click',function(){
   		var key = $key.val();
   		var number = $number.val();
-  		fetch("http://connect.mobilon.ru/api/recall/send/"+key,{
+  		var id = $id.val();
+  		fetch("http://connect.mobilon.ru/api/recall/send?token="+key+"&id="+id,{
   			mode: 'cors',
   			method: 'POST',
   			body: 'number='+number
@@ -42,10 +48,12 @@
   		.then(function(data){
 			console.log('data',data);
 			$number.val('');
+			$id.val('');
   		})
   		.catch(function(error){
 			console.log('error',error);
 			$number.val('');
+			$id.val('');
   		});
   	});
   	$key.on('change',function(){
