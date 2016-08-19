@@ -40,7 +40,7 @@
   		var key = $key.val();
   		var number = $number.val();
   		var id = $id.val();
-  		fetch("//connect.mobilon.ru/api/recall/send?token="+key+"&id="+id,{
+  		fetch("//connect.mobilon.ru/api/reaper/send?token="+key+"&id="+id,{
   			mode: 'cors',
   			method: 'POST',
   			body: 'number='+number
