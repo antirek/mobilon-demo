@@ -41,11 +41,12 @@
       var key = $key.val();
       var number = $number.val();
       var id = $id.val();
-      
+      var formData=new FormData();
+      formData.append('number',number);
       fetch("//connect.mobilon.ru/api/reaper/send?token=" + key + "&id=" + id, {
         mode: 'cors',
         method: 'POST',
-        body: 'number=' + number
+        body: formData
       })
       .then(function(data){
         console.log('data',data);
