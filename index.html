@@ -10,7 +10,7 @@
   <body>
   	<div class="container">
   		<div class="row">
-  			<div class="col-md-12">
+  			<div class="col-md-6">
   				<h4>Callback form</h4>
   				<form class="form">
 
@@ -40,7 +40,7 @@
   		var key = $key.val();
   		var number = $number.val();
   		var id = $id.val();
-  		fetch("http://connect.mobilon.ru/api/recall/send?token="+key+"&id="+id,{
+  		fetch("//connect.mobilon.ru/api/recall/send?token="+key+"&id="+id,{
   			mode: 'cors',
   			method: 'POST',
   			body: 'number='+number
