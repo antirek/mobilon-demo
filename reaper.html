@@ -28,6 +28,10 @@
           <a class="btn btn-default" id="submitRecallForm">Submit</a>
           </form>
         </div>
+        <div class="col-md-6" >
+          <h3>Result</h3>
+          <div class="well" id="responce"></div>
+        </div>
       </div>
 
     </div>
@@ -49,9 +53,23 @@
         body: formData
       })
       .then(function(data){
-        console.log('data',data);
         $number.val('');
         $id.val('');
+        return data.text();
+      })
+      .then(function(text){
+        $responce.text( text);
+        setTimeout(function(){
+            $responce.text( '');
+        },5000)
+        console.log(text);
+      })
+      .then(function(text){
+        $responce.text( text);
+        setTimeout(function(){
+            $responce.text( '');
+        },5000)
+        console.log(text);
       })
       .catch(function(error){
         console.log('error',error);

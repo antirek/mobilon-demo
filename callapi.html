@@ -24,6 +24,10 @@
           <a class="btn btn-default" id="submitRecallForm">Submit</a>
           </form>
         </div>
+        <div class="col-md-6" >
+          <h3>Result</h3>
+          <div class="well" id="responce"></div>
+        </div>
       </div>
 
     </div>
@@ -31,6 +35,7 @@
     
     var $number = $('#number');
     var $key = $('#key');
+    var $responce = $('#responce')
 
     $('#submitRecallForm').on('click',function(){
       var key = $key.val();
@@ -38,8 +43,15 @@
       
       fetch("//connect.mobilon.ru/api/call/CallToSubscriber?key=" + key + "&outboundNumber=" + number)
       .then(function(data){
-        console.log('data',data);
         $number.val('');
+        return data.text()
+      })
+      .then(function(text){
+        $responce.text( text);
+        setTimeout(function(){
+            $responce.text( '');
+        },5000)
+        console.log(text);
       })
       .catch(function(error){
         console.log('error',error);
