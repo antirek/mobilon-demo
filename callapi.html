@@ -74,7 +74,7 @@
                     $number.val('');
                 });
     });
-    $('submitSubscrive').on('click', function () {
+    $('#submitSubscrive').on('click', function () {
         if (socket) {
             socket.close();
         }
@@ -82,7 +82,7 @@
             $responseSubscribe.html(event.data);
         });
     });
-    $('submitInfo').on('click', function () {
+    $('#submitInfo').on('click', function () {
         var api = getApi();
         api.setToken($token.val());
         api.info($callid.val())
