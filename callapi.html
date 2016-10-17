@@ -30,9 +30,14 @@
                     <label for="callid">callid</label>
                     <input type="text" class="form-control" id="callid" placeholder="Callid">
                 </div>
+                <div class="form-group">
+                    <label for="date">date</label>
+                    <input type="text" class="form-control" id="date" placeholder="Date">
+                </div>
                 <a class="btn btn-default" id="submitCall">Call</a>
                 <a class="btn btn-default" id="submitSubscrive">Subscribe</a>
                 <a class="btn btn-default" id="submitInfo">Info</a>
+                <a class="btn btn-default" id="submitJournal">Journal</a>
             </form>
         </div>
         <div class="col-md-6">
@@ -51,6 +56,7 @@
     var $token = $('#token');
     var $callid = $('#callid');
     var $responseSubscribe = $('#responseSubscribe');
+    var $date=$('#date');
     var socket = null;
     var getApi = function () {
         var key = $key.val();
@@ -105,12 +111,42 @@
                     $callid.val('');
                 });
     });
+
+    $('#submitJournal').on('click',function(){
+        var api = getApi();
+        api.setToken($token.val());
+        api.journal($date.val())
+                .then(function (data) {
+                    $date.val('');
+                    return data.text()
+                })
+                .then(function (text) {
+                    $response.text(text);
+                    setTimeout(function () {
+                        $response.text('');
+                    }, 5000);
+                    console.log(text);
+                })
+                .catch(function (error) {
+                    console.log('error', error);
+                    $date.val('');
+                });
+    });
+
     $key.on('change', function () {
         window.localStorage.userKey = $key.val();
     });
 
     if (window.localStorage && window.localStorage.userKey) {
         $key.val(window.localStorage.userKey);
+    }
+
+    $token.on('change', function () {
+        window.localStorage.userToken = $token.val();
+    });
+
+    if (window.localStorage && window.localStorage.userToken) {
+        $token.val(window.localStorage.userToken);
     }
 
 </script>
