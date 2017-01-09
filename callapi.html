@@ -9,8 +9,8 @@
 </head>
 
 <body>
-
   <div class="container">
+      
       <h3>Call Api</h3>
       <div class="row">
           <div class="col-md-2"><h4>Settings</h4></div>
@@ -30,8 +30,6 @@
       </div>
 
       <hr>
-      
-
       <div class="row">
           <div class="col-md-6">
               <h4>Call</h4>
@@ -117,18 +115,18 @@
       
       $('#submitCall').on('click', function () {
           getApi().call($number.val())
-                  .then(function (data) {
-                      $number.val('');
-                      return data.text()
-                  })
-                  .then(function (text) {
-                      $responseCall.text(text);                      
-                      console.log(text);
-                  })
-                  .catch(function (error) {
-                      console.log('error', error);
-                      $number.val('');
-                  });
+            .then(function (data) {
+                $number.val('');
+                return data.text()
+            })
+            .then(function (text) {
+                $responseCall.text(text);                      
+                console.log(text);
+            })
+            .catch(function (error) {
+                console.log('error', error);
+                $number.val('');
+            });
       });
 
 
@@ -138,46 +136,45 @@
           }
           socket = getApi().subscribe(function (event) {
               $responseSubscribe.html(event.data);
-                  setTimeout(function () {
-                      $responseSubscribe.html('');
-                  }, 5000);
           });
       });
 
       $('#submitInfo').on('click', function () {
           var api = getApi();
           api.setToken($token.val());
+
           api.info($callid.val())
-                  .then(function (data) {
-                      $callid.val('');
-                      return data.text()
-                  })
-                  .then(function (text) {
-                      $responseInfo.text(text);
-                      console.log(text);
-                  })
-                  .catch(function (error) {
-                      console.log('error', error);
-                      $callid.val('');
-                  });
+            .then(function (data) {
+                $callid.val('');
+                return data.text()
+            })
+            .then(function (text) {
+                $responseInfo.text(text);
+                console.log(text);
+            })
+            .catch(function (error) {
+                console.log('error', error);
+                $callid.val('');
+            });
       });
 
       $('#submitJournal').on('click',function(){
           var api = getApi();
           api.setToken($token.val());
+
           api.journal($date.val())
-                  .then(function (data) {
-                      $date.val('');
-                      return data.text()
-                  })
-                  .then(function (text) {
-                      $responseJournal.text(text);                      
-                      console.log(text);
-                  })
-                  .catch(function (error) {
-                      console.log('error', error);
-                      $date.val('');
-                  });
+            .then(function (data) {
+                $date.val('');
+                return data.text()
+            })
+            .then(function (text) {
+                $responseJournal.text(text);                      
+                console.log(text);
+            })
+            .catch(function (error) {
+                console.log('error', error);
+                $date.val('');
+            });
       });
 
       $key.on('change', function () {
