@@ -7,149 +7,196 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://rawgit.com/antirek/mobilon-vpbx-api.js/master/dist/mobilon-vpbx-api.js"></script>
 </head>
+
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Call Api</h4>
-            <form class="form">
 
-                <div class="form-group">
-                    <label for="key">User key</label>
-                    <input type="text" class="form-control" id="key" placeholder="key">
-                </div>
-                <div class="form-group">
-                    <label for="number">number</label>
-                    <input type="text" class="form-control" id="number" placeholder="Number">
-                </div>
-                <div class="form-group">
-                    <label for="token">token</label>
-                    <input type="text" class="form-control" id="token" placeholder="Token">
-                </div>
-                <div class="form-group">
-                    <label for="callid">callid</label>
-                    <input type="text" class="form-control" id="callid" placeholder="Callid">
-                </div>
-                <div class="form-group">
-                    <label for="date">date</label>
-                    <input type="text" class="form-control" id="date" placeholder="Date">
-                </div>
-                <a class="btn btn-default" id="submitCall">Call</a>
-                <a class="btn btn-default" id="submitSubscrive">Subscribe</a>
-                <a class="btn btn-default" id="submitInfo">Info</a>
-                <a class="btn btn-default" id="submitJournal">Journal</a>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <h3>Result</h3>
-            <div class="well" id="response"></div>
-            <h3>Result subscribe</h3>
-            <div class="well" id="responseSubscribe"></div>
-        </div>
-    </div>
-</div>
-<script>
+  <div class="container">
+      <h3>Call Api</h3>
+      <div class="row">
+          <div class="col-md-2"><h4>Settings</h4></div>
+          <div class="col-md-5">
 
-    var $number = $('#number');
-    var $key = $('#key');
-    var $response = $('#response');
-    var $token = $('#token');
-    var $callid = $('#callid');
-    var $responseSubscribe = $('#responseSubscribe');
-    var $date=$('#date');
-    var socket = null;
-    var getApi = function () {
-        var key = $key.val();
-        return new MobilonVPBXApi(key);
-    };
-    $('#submitCall').on('click', function () {
-        getApi().call($number.val())
-                .then(function (data) {
-                    $number.val('');
-                    return data.text()
-                })
-                .then(function (text) {
-                    $response.text(text);
-                    setTimeout(function () {
-                        $response.text('');
-                    }, 5000);
-                    console.log(text);
-                })
-                .catch(function (error) {
-                    console.log('error', error);
-                    $number.val('');
-                });
-    });
-    $('#submitSubscrive').on('click', function () {
-        if (socket) {
-            socket.close();
-        }
-        socket = getApi().subscribe(function (event) {
-            $responseSubscribe.html(event.data);
-                setTimeout(function () {
-                    $responseSubscribe.html('');
-                }, 5000);
-        });
-    });
-    $('#submitInfo').on('click', function () {
-        var api = getApi();
-        api.setToken($token.val());
-        api.info($callid.val())
-                .then(function (data) {
-                    $callid.val('');
-                    return data.text()
-                })
-                .then(function (text) {
-                    $response.text(text);
-                    setTimeout(function () {
-                        $response.text('');
-                    }, 5000);
-                    console.log(text);
-                })
-                .catch(function (error) {
-                    console.log('error', error);
-                    $callid.val('');
-                });
-    });
+              <div class="form-group">
+                  <label for="key">User key</label>
+                  <input type="text" class="form-control" id="key" placeholder="key">
+              </div>
+          </div>
+          <div class="col-md-5">
+              <div class="form-group">
+                  <label for="token">token</label>
+                  <input type="text" class="form-control" id="token" placeholder="Token">
+              </div>
+          </div>
+      </div>
 
-    $('#submitJournal').on('click',function(){
-        var api = getApi();
-        api.setToken($token.val());
-        api.journal($date.val())
-                .then(function (data) {
-                    $date.val('');
-                    return data.text()
-                })
-                .then(function (text) {
-                    $response.text(text);
-                    setTimeout(function () {
-                        $response.text('');
-                    }, 5000);
-                    console.log(text);
-                })
-                .catch(function (error) {
-                    console.log('error', error);
-                    $date.val('');
-                });
-    });
+      <hr>
+      
 
-    $key.on('change', function () {
-        window.localStorage.userKey = $key.val();
-    });
+      <div class="row">
+          <div class="col-md-6">
+              <h4>Call</h4>
+              <div class="form-group">
+                  <label for="number">number</label>
+                  <input type="text" class="form-control" id="number" placeholder="Number">
+              </div>
+              <a class="btn btn-default" id="submitCall">Call</a> 
+          </div>
+          <div class="col-md-6">
+              <h3>Result</h3>
+              <div class="well" id="responseCall"></div>            
+          </div>
+      </div>
 
-    if (window.localStorage && window.localStorage.userKey) {
-        $key.val(window.localStorage.userKey);
-    }
+      <hr>
+      <div class="row">
+          <div class="col-md-6">
+              <h4>Info</h4>
+              <div class="form-group">
+                  <label for="callid">callid</label>
+                  <input type="text" class="form-control" id="callid" placeholder="Callid">
+              </div>
+              <a class="btn btn-default" id="submitInfo">Info</a>
+          </div>
+          <div class="col-md-6">
+              <h3>Result</h3>
+              <div class="well" id="responseInfo"></div>
+              
+          </div>
+      </div>
 
-    $token.on('change', function () {
-        window.localStorage.userToken = $token.val();
-    });
+      <hr>
+      <div class="row">
+          <div class="col-md-6">
+              <h4>Journal</h4>
+              <div class="form-group">
+                  <label for="date">date</label>
+                  <input type="text" class="form-control" id="date" placeholder="Date">
+              </div>
+              <a class="btn btn-default" id="submitJournal">Journal</a>
+          </div>
+          <div class="col-md-6">
+              <h3>Result</h3>
+              <div class="well" id="responseJournal"></div>            
+          </div>
+      </div>
 
-    if (window.localStorage && window.localStorage.userToken) {
-        $token.val(window.localStorage.userToken);
-    }
+      <hr>
+      <div class="row">
+          <div class="col-md-6">
+              <h4>Subscribe</h4>            
+              <a class="btn btn-default" id="submitSubscribe">Subscribe</a>
+          </div>
+          <div class="col-md-6">
+              <h3>Result</h3>
+              <div class="well" id="responseSubscribe"></div>          
+          </div>
+      </div>
 
-</script>
+  </div>
+  <script>
+
+      var $number = $('#number');
+      var $key = $('#key');
+
+      var $responseCall = $('#responseCall');
+      var $responseInfo = $('#responseInfo');
+      var $responseJournal = $('#responseJournal');
+      
+      var $token = $('#token');
+      var $callid = $('#callid');
+      
+      var $responseSubscribe = $('#responseSubscribe');
+      var $date = $('#date');
+      var socket = null;
+
+
+      var getApi = function () {
+          var key = $key.val();
+          return new MobilonVPBXApi(key);
+      };
+      
+      $('#submitCall').on('click', function () {
+          getApi().call($number.val())
+                  .then(function (data) {
+                      $number.val('');
+                      return data.text()
+                  })
+                  .then(function (text) {
+                      $responseCall.text(text);                      
+                      console.log(text);
+                  })
+                  .catch(function (error) {
+                      console.log('error', error);
+                      $number.val('');
+                  });
+      });
+
+
+      $('#submitSubscribe').on('click', function () {
+          if (socket) {
+              socket.close();
+          }
+          socket = getApi().subscribe(function (event) {
+              $responseSubscribe.html(event.data);
+                  setTimeout(function () {
+                      $responseSubscribe.html('');
+                  }, 5000);
+          });
+      });
+
+      $('#submitInfo').on('click', function () {
+          var api = getApi();
+          api.setToken($token.val());
+          api.info($callid.val())
+                  .then(function (data) {
+                      $callid.val('');
+                      return data.text()
+                  })
+                  .then(function (text) {
+                      $responseInfo.text(text);
+                      console.log(text);
+                  })
+                  .catch(function (error) {
+                      console.log('error', error);
+                      $callid.val('');
+                  });
+      });
+
+      $('#submitJournal').on('click',function(){
+          var api = getApi();
+          api.setToken($token.val());
+          api.journal($date.val())
+                  .then(function (data) {
+                      $date.val('');
+                      return data.text()
+                  })
+                  .then(function (text) {
+                      $response.text(text);                      
+                      console.log(text);
+                  })
+                  .catch(function (error) {
+                      console.log('error', error);
+                      $date.val('');
+                  });
+      });
+
+      $key.on('change', function () {
+          window.localStorage.userKey = $key.val();
+      });
+
+      if (window.localStorage && window.localStorage.userKey) {
+          $key.val(window.localStorage.userKey);
+      }
+
+      $token.on('change', function () {
+          window.localStorage.userToken = $token.val();
+      });
+
+      if (window.localStorage && window.localStorage.userToken) {
+          $token.val(window.localStorage.userToken);
+      }
+
+  </script>
 
 </body>
 </html>
